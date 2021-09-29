@@ -44,9 +44,8 @@ int main(){
     string strb;
     cin>>strb;
     istringstream is(strb);
-    while(true){
-        char tmp;
-        is>>tmp;
+    char tmp;
+    while(is>>tmp){
         if(tmp==']'){
             break;
         }else if(tmp<='9'&&tmp>='0'){
