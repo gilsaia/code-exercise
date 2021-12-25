@@ -21,7 +21,7 @@ struct ListNode {
  *     ListNode(int x, ListNode *next) : val(x), next(next) {}
  * };
  */
-class Solution {
+class Solution2 {
 public:
     //offical
     ListNode* sortList(ListNode* head) {
@@ -83,6 +83,70 @@ public:
             temp->next = temp2;
         }
         return dummyHead->next;
+    }
+};
+class Solution {
+public:
+    ListNode* sortList(ListNode* head) {
+        if(!head){
+            return nullptr;
+        }
+        int length=0;
+        ListNode *cur=head;
+        while(cur){
+            ++length;
+            cur=cur->next;
+        }
+        cur=head;
+        ListNode *dummy=new ListNode(0,head);
+        for(int i=1;i<length;i*=2){
+            ListNode *first=dummy->next,*last=dummy;
+            while(first){
+                ListNode *head1=first;
+                for(int j=1;j<i&&first->next;++j){
+                    first=first->next;
+                }
+                ListNode *head2=first->next;
+                first->next=nullptr;
+                first=head2;
+                for(int j=1;j<i&&first&&first->next;++j){
+                    first=first->next;
+                }
+                ListNode *next=nullptr;
+                if(first){
+                    next=first->next;
+                    first->next=nullptr;
+                }
+                ListNode *merged=merge(head1,head2);
+                last->next=merged;
+                while(last->next){
+                    last=last->next;
+                }
+                first=next;
+            }
+        }
+        return dummy->next;
+    }
+    ListNode* merge(ListNode *a,ListNode *b){
+        ListNode *dummy=new ListNode(0);
+        ListNode *cur=dummy;
+        while(a&&b){
+            if(a->val<b->val){
+                cur->next=a;
+                a=a->next;
+                cur=cur->next;
+            }else{
+                cur->next=b;
+                b=b->next;
+                cur=cur->next;
+            }
+        }
+        if(a){
+            cur->next=a;
+        }else{
+            cur->next=b;
+        }
+        return dummy->next;
     }
 };
 // @lc code=end
